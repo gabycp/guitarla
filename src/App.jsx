@@ -1,12 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Guitar from './components/Guitar'
+import { db } from './data/db';
 
 function App() {
 
-  const [auth, setAuth] = useState(false); 
+const [data, setData] = useState(db)
+const [cart, setCart] = useState([])
 
-  console.log(auth);
+function addToCart(item)
+{
+
+  const itemExist = cart.findIndex(guitar => guitar.id === item.id)
+  if(itemExist >=0)
+    {
+      const updatedCart = [...cart]
+      updatedCart[itemExist].quantity+=1
+      setCart(updatedCart)
+    }
+    else
+    {
+      item.quantity = 1
+      setCart( [...cart, item] )
+      console.log("No existe elemento... Agregando...");
+    
+    }
+  
+
+}
+  
   
   return (
     <>
@@ -16,7 +38,17 @@ function App() {
         <h2 className="text-center">Nuestra Colección</h2>
 
         <div className="row mt-5">
-          <Guitar />            
+          {
+            data.map((guitar)=>
+              (
+                <Guitar
+                  key= {guitar.id}
+                  guitar = {guitar}
+                  setCart = {setCart}
+                  addToCart = {addToCart} />
+              ))
+          }
+                    
         </div>
     </main>
 
