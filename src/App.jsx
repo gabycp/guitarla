@@ -5,11 +5,21 @@ import { db } from './data/db';
 
 function App() {
 
+const initialCart = () => 
+  {
+    const localStorageCart = localStorage.getItem('cart')
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+  }  
+
 const [data, setData] = useState(db)
-const [cart, setCart] = useState([])
+const [cart, setCart] = useState(initialCart)
 
 const MAX_ITEMS = 5
 const MIN_ITEMS = 1
+
+useEffect(() =>{
+  localStorage.setItem('cart', JSON.stringify(cart))
+},[cart])
 
 function addToCart(item)
 {
@@ -28,6 +38,7 @@ function addToCart(item)
       setCart( [...cart, item] )
     
     }
+
 }
   
 function removeFromCart(id)
@@ -69,6 +80,12 @@ function decreaseQuatity(id)
 
     setCart(updatedCart)
 }
+
+function clearCart()
+{
+  setCart([])
+}
+
   
   return (
     <>
@@ -77,6 +94,7 @@ function decreaseQuatity(id)
      removeFromCart = {removeFromCart}
      increaseQuantity = {increaseQuantity}
      decreaseQuatity = {decreaseQuatity}
+     clearCart={clearCart}
      />   
     
     <main className="container-xl mt-5">
