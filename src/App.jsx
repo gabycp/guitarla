@@ -22,18 +22,21 @@ function addToCart(item)
     {
       item.quantity = 1
       setCart( [...cart, item] )
-      console.log("No existe elemento... Agregando...");
     
     }
-  
-
 }
   
+function removeFromCart(id)
+{
+  setCart(prevCart => prevCart.filter(guitar => guitar.id !== id)) 
+}
   
   return (
     <>
     <Header 
-     cart = {cart} />   
+     cart = {cart}
+     removeFromCart = {removeFromCart}
+     />   
     
     <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
